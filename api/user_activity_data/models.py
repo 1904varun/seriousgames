@@ -12,3 +12,13 @@ class UserActivityData(models.Model):
     class Meta:
         # managed = False
         db_table = 'user_activity_data'
+
+
+
+class UserPoints(models.Model):
+    id = models.IntegerField(primary_key=True)
+    total_points = models.IntegerField()
+
+    class Meta:
+        # managed = False
+        db_table = 'user_points'
