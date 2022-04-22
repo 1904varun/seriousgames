@@ -17,9 +17,10 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        return Response({"user": UserSerializer(user,
+        return Response({"data": {
+                        "user": UserSerializer(user,
                         context=self.get_serializer_context()).data,
-                        "token": AuthToken.objects.create(user)[1]})
+                        "token": AuthToken.objects.create(user)[1]}})
 
 
 
@@ -32,5 +33,10 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
-
+        # return super({LoginAPI, self}).post(request, format=None)
+        return Response({
+            "data": {
+            "user": UserSerializer(user).data,
+            "token": AuthToken.objects.create(user)[1]
+            }
+        })
