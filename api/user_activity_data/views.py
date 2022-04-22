@@ -1,8 +1,11 @@
-import re
+from logging import exception
+import json
 from django.forms import model_to_dict
-from user_activity_data.models import UserActivityData, UserPoints
+from django.http import JsonResponse
+from user_activity_data.models import UserActivityData, UserPoints, Rewards
 from rest_framework import generics
 from rest_framework.response import Response
+from collections import defaultdict
 #user_activity_data
 
 
@@ -25,7 +28,6 @@ class UserActivity(generics.GenericAPIView):
 class UserPointsData(generics.GenericAPIView):
 
     def get(self, request, user_id):
-        
         try:
             user_points_model = UserPoints.objects.filter(id=user_id)
             user_total_points = user_points_model[0].total_points
@@ -35,3 +37,19 @@ class UserPointsData(generics.GenericAPIView):
             return Response({"data":{
                 "value": "error"}})
 
+
+
+class RewardsTable(generics.GenericAPIView):
+
+    
+    def get(self, request):
+
+        try:
+            data = {}
+            rewards_model = Rewards.objects.all()
+            data = list(rewards_model.values())
+            return JsonResponse({'data':data}, safe=False)
+        except:
+            return Response({"data":{
+                "value": "error"}})
+        

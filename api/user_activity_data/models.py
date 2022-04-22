@@ -22,3 +22,15 @@ class UserPoints(models.Model):
     class Meta:
         # managed = False
         db_table = 'user_points'
+
+
+
+class Rewards(models.Model):
+    item_id = models.IntegerField(primary_key=True)
+    item_title = models.TextField()
+    item_description = models.TextField()
+    item_points = models.IntegerField()
+
+    class Meta:
+        # managed = False
+        db_table = 'rewards'
